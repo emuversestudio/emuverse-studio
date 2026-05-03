@@ -66,55 +66,7 @@
             inset: 0;
         }
 
-        /* ========== STAR STYLES ========== */
-        .star {
-            position: absolute;
-            border-radius: 50%;
-            animation: twinkle var(--dur, 3s) var(--delay, 0s) infinite ease-in-out;
-        }
-
-        .star.s1 { background: radial-gradient(circle, #ffffff, rgba(200,220,255,0)); box-shadow: 0 0 4px 1px rgba(255,255,255,0.6); }
-        .star.s2 { background: radial-gradient(circle, #c8d4ff, rgba(200,210,255,0)); box-shadow: 0 0 6px 2px rgba(180,200,255,0.5); }
-        .star.s3 { background: radial-gradient(circle, #00E5FF, rgba(0,229,255,0)); box-shadow: 0 0 8px 3px rgba(0,229,255,0.5); }
-        .star.s4 { background: radial-gradient(circle, #7C4DFF, rgba(124,77,255,0)); box-shadow: 0 0 8px 3px rgba(124,77,255,0.5); }
-        .star.bright { box-shadow: 0 0 12px 4px rgba(255,255,255,0.9), 0 0 24px 8px rgba(200,220,255,0.4); }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: var(--min-op, 0.15); transform: scale(1); }
-            50% { opacity: var(--max-op, 1); transform: scale(var(--scale, 1.3)); }
-        }
-
-        /* ========== STAR CROSS (4-pointed) ========== */
-        .star-cross {
-            position: absolute;
-            animation: cross-twinkle var(--dur, 4s) var(--delay, 0s) infinite ease-in-out;
-        }
-
-        .star-cross::before, .star-cross::after {
-            content: '';
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .star-cross::before {
-            width: var(--size, 2px);
-            height: calc(var(--size, 2px) * 5);
-        }
-
-        .star-cross::after {
-            width: calc(var(--size, 2px) * 5);
-            height: var(--size, 2px);
-        }
-
-        @keyframes cross-twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-            30% { opacity: 0; }
-            50% { opacity: 1; transform: scale(1) rotate(45deg); }
-            70% { opacity: 0; }
-        }
+        /* Stars drawn on canvas — no CSS star rules needed */
 
         /* ========== METEOR / SHOOTING STAR ========== */
         .meteor-canvas {
@@ -548,7 +500,7 @@
     <div class="nebula nebula-2"></div>
     <div class="nebula nebula-3"></div>
     <div class="nebula nebula-4"></div>
-    <div class="starfield" id="starfield"></div>
+    <canvas id="starfield" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
     <canvas class="meteor-canvas" id="meteorCanvas"></canvas>
     <div class="particles-container" id="particles"></div>
 
@@ -637,10 +589,6 @@
             <p id="copy-msg">✓ COPIED!</p>
             <div class="footer-links">
                 <a href="https://github.com/mrtgunes" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="#" class="footer-link" title="Coming soon">Discord</a>
-                <a href="#" class="footer-link" title="Coming soon">Twitter</a>
-                <a href="terms.html" class="footer-link">Terms</a>
-                <a href="support.html" class="footer-link">Support</a>
             </div>
             <p class="copyright">© 2026 EMUVERSE STUDIO. ALL RIGHTS RESERVED.</p>
         </div>
@@ -648,48 +596,120 @@
 </div>
 
 <script>
-// ===== RICH STAR GENERATION =====
+// ===== CANVAS STAR SYSTEM =====
 function generateStars() {
-    const sf = document.getElementById('starfield');
-    const types = ['s1','s2','s3','s4'];
-    const count = 280;
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const W = canvas.width, H = canvas.height;
 
-    for (let i = 0; i < count; i++) {
-        const el = document.createElement('div');
-        const type = types[Math.floor(Math.random() * types.length)];
-        const isBright = Math.random() > 0.82;
-        const size = isBright ? (Math.random() * 3 + 2) : (Math.random() * 2 + 0.5);
-        const dur = (Math.random() * 4 + 2).toFixed(1);
-        const delay = (Math.random() * 6).toFixed(2);
-        const minOp = (Math.random() * 0.1 + 0.05).toFixed(2);
-        const maxOp = isBright ? (Math.random() * 0.4 + 0.7).toFixed(2) : (Math.random() * 0.5 + 0.4).toFixed(2);
+    const COLORS = [
+        [255, 255, 255],
+        [200, 215, 255],
+        [180, 240, 255],
+        [210, 190, 255],
+        [255, 248, 210],
+    ];
 
-        el.className = `star ${type}${isBright ? ' bright' : ''}`;
-        el.style.cssText = `
-            width:${size}px; height:${size}px;
-            left:${Math.random()*100}%;
-            top:${Math.random()*100}%;
-            --dur:${dur}s; --delay:${delay}s;
-            --min-op:${minOp}; --max-op:${maxOp};
-            --scale:${isBright ? 1.6 : 1.2};
-        `;
-        sf.appendChild(el);
+    function drawSpikeStar(ctx, x, y, size, color, alpha, rotation) {
+        const [r, g, b] = color;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.globalAlpha = alpha;
+
+        const long = size * 5.5;
+        const thin = size * 0.12;
+
+        // Horizontal spike
+        const hg = ctx.createLinearGradient(-long, 0, long, 0);
+        hg.addColorStop(0,   `rgba(${r},${g},${b},0)`);
+        hg.addColorStop(0.3, `rgba(${r},${g},${b},0.08)`);
+        hg.addColorStop(0.5, `rgba(${r},${g},${b},1)`);
+        hg.addColorStop(0.7, `rgba(${r},${g},${b},0.08)`);
+        hg.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+        ctx.beginPath();
+        ctx.moveTo(-long, 0); ctx.lineTo(0, -thin);
+        ctx.lineTo(long, 0);  ctx.lineTo(0,  thin);
+        ctx.closePath();
+        ctx.fillStyle = hg; ctx.fill();
+
+        // Vertical spike
+        const vg = ctx.createLinearGradient(0, -long, 0, long);
+        vg.addColorStop(0,   `rgba(${r},${g},${b},0)`);
+        vg.addColorStop(0.3, `rgba(${r},${g},${b},0.08)`);
+        vg.addColorStop(0.5, `rgba(${r},${g},${b},1)`);
+        vg.addColorStop(0.7, `rgba(${r},${g},${b},0.08)`);
+        vg.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+        ctx.beginPath();
+        ctx.moveTo(0, -long); ctx.lineTo(-thin, 0);
+        ctx.lineTo(0,  long); ctx.lineTo( thin, 0);
+        ctx.closePath();
+        ctx.fillStyle = vg; ctx.fill();
+
+        // Bright core
+        const cg = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 1.4);
+        cg.addColorStop(0,   `rgba(255,255,255,1)`);
+        cg.addColorStop(0.4, `rgba(${r},${g},${b},0.9)`);
+        cg.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+        ctx.beginPath(); ctx.arc(0, 0, size * 1.4, 0, Math.PI*2);
+        ctx.fillStyle = cg; ctx.fill();
+
+        ctx.restore();
     }
 
-    // Add 4-pointed cross stars scattered around
-    for (let i = 0; i < 18; i++) {
-        const el = document.createElement('div');
-        const size = Math.random() * 1.5 + 0.8;
-        el.className = 'star-cross';
-        el.style.cssText = `
-            left:${Math.random()*100}%;
-            top:${Math.random()*100}%;
-            --size:${size}px;
-            --dur:${(Math.random()*5+3).toFixed(1)}s;
-            --delay:${(Math.random()*8).toFixed(2)}s;
-        `;
-        sf.appendChild(el);
+    // 8 stationary stars spread across full screen, each flashes in and out independently
+    const STAR_DEFS = [
+        // [xFrac, yFrac, size, spikes, peakAlpha, cycleDur(ms)]
+        [0.12, 0.18, 1.8, true,  0.85, 5200],
+        [0.78, 0.08, 1.2, true,  0.75, 4100],
+        [0.45, 0.32, 0.7, false, 0.50, 3600],
+        [0.88, 0.55, 1.5, true,  0.80, 6300],
+        [0.05, 0.65, 0.9, false, 0.45, 4800],
+        [0.62, 0.72, 1.3, true,  0.70, 5700],
+        [0.30, 0.85, 0.6, false, 0.40, 3200],
+        [0.92, 0.88, 1.1, true,  0.65, 4600],
+    ];
+
+    const stars = STAR_DEFS.map(([xf, yf, size, spikes, peakAlpha, cycleDur]) => ({
+        x: xf * W,
+        y: yf * H,
+        size,
+        spikes,
+        peakAlpha,
+        cycleDur,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        rotation: Math.random() * Math.PI / 4,
+        // stagger start so they don't all flash together
+        offset: Math.random() * cycleDur,
+    }));
+
+    function animateStars(ts) {
+        ctx.clearRect(0, 0, W, H);
+        for (const s of stars) {
+            // Sawtooth-like: fade in 30%, hold 40%, fade out 30%
+            const t = ((ts + s.offset) % s.cycleDur) / s.cycleDur;
+            let alpha;
+            if (t < 0.30)      alpha = (t / 0.30) * s.peakAlpha;
+            else if (t < 0.70) alpha = s.peakAlpha * (1 - 0.08 * Math.sin((t - 0.30) / 0.40 * Math.PI * 3));
+            else               alpha = s.peakAlpha * (1 - (t - 0.70) / 0.30);
+
+            if (alpha < 0.01) continue;
+            if (s.spikes) drawSpikeStar(ctx, s.x, s.y, s.size, s.color, alpha, s.rotation);
+            else {
+                const [r,g,b] = s.color;
+                const rg = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size * 2.5);
+                rg.addColorStop(0,   `rgba(255,255,255,${alpha.toFixed(3)})`);
+                rg.addColorStop(0.5, `rgba(${r},${g},${b},${(alpha*0.5).toFixed(3)})`);
+                rg.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size * 2.5, 0, Math.PI*2);
+                ctx.fillStyle = rg; ctx.fill();
+            }
+        }
+        requestAnimationFrame(animateStars);
     }
+    requestAnimationFrame(animateStars);
 }
 
 // ===== CANVAS-BASED ASYMMETRIC METEOR SYSTEM =====
@@ -707,18 +727,12 @@ function generateStars() {
     // Meteor configs — varied angles, spawn zones, speeds, sizes
     // angle: degrees (direction of travel), spawn from different screen edges/zones
     const METEOR_ZONES = [
-        // Top-right quadrant, steep angle
-        { spawnZone: 'top-right', angleMin: 200, angleMax: 240, lenMin: 100, lenMax: 260, speedMin: 1.8, speedMax: 3.2, intervalMin: 2800, intervalMax: 6000 },
-        // Top-left, shallower
-        { spawnZone: 'top-left', angleMin: 290, angleMax: 330, lenMin: 80, lenMax: 180, speedMin: 1.5, speedMax: 2.8, intervalMin: 4000, intervalMax: 9000 },
-        // Right side, nearly horizontal
-        { spawnZone: 'right', angleMin: 175, angleMax: 210, lenMin: 120, lenMax: 300, speedMin: 2.0, speedMax: 3.8, intervalMin: 5000, intervalMax: 11000 },
-        // Top-center, steep
-        { spawnZone: 'top-center', angleMin: 215, angleMax: 250, lenMin: 90, lenMax: 220, speedMin: 1.6, speedMax: 3.0, intervalMin: 3500, intervalMax: 8000 },
-        // Bottom-right, upward-left  (rare reverse)
-        { spawnZone: 'bottom-right', angleMin: 140, angleMax: 165, lenMin: 60, lenMax: 140, speedMin: 1.2, speedMax: 2.2, intervalMin: 8000, intervalMax: 16000 },
-        // Far left, diagonal
-        { spawnZone: 'top-far-left', angleMin: 330, angleMax: 355, lenMin: 70, lenMax: 160, speedMin: 1.4, speedMax: 2.5, intervalMin: 7000, intervalMax: 14000 },
+        { spawnZone: 'top-right',   angleMin: 200, angleMax: 240, lenMin: 120, lenMax: 280, speedMin: 4.5, speedMax: 7.0, intervalMin: 1800, intervalMax: 4000 },
+        { spawnZone: 'top-left',    angleMin: 290, angleMax: 330, lenMin: 100, lenMax: 200, speedMin: 3.8, speedMax: 6.0, intervalMin: 2500, intervalMax: 6000 },
+        { spawnZone: 'right',       angleMin: 175, angleMax: 210, lenMin: 140, lenMax: 320, speedMin: 5.0, speedMax: 8.5, intervalMin: 3000, intervalMax: 7000 },
+        { spawnZone: 'top-center',  angleMin: 215, angleMax: 250, lenMin: 110, lenMax: 240, speedMin: 4.0, speedMax: 6.5, intervalMin: 2000, intervalMax: 5000 },
+        { spawnZone: 'bottom-right',angleMin: 140, angleMax: 165, lenMin:  70, lenMax: 160, speedMin: 3.0, speedMax: 5.0, intervalMin: 5000, intervalMax: 11000 },
+        { spawnZone: 'top-far-left',angleMin: 330, angleMax: 355, lenMin:  80, lenMax: 180, speedMin: 3.5, speedMax: 5.5, intervalMin: 4000, intervalMax: 9000 },
     ];
 
     function rand(min, max) { return Math.random() * (max - min) + min; }
@@ -787,41 +801,52 @@ function generateStars() {
         }
 
         draw(ctx) {
-            const tailX = this.x - Math.cos(this.angle) * this.length;
-            const tailY = this.y - Math.sin(this.angle) * this.length;
-
             const [r, g, b] = this.color;
-
-            // Main trail gradient
-            const grad = ctx.createLinearGradient(tailX, tailY, this.x, this.y);
-            grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
-            grad.addColorStop(0.4, `rgba(${r},${g},${b},${(this.opacity * 0.3).toFixed(2)})`);
-            grad.addColorStop(0.8, `rgba(${r},${g},${b},${(this.opacity * 0.7).toFixed(2)})`);
-            grad.addColorStop(1, `rgba(${r},${g},${b},${this.opacity.toFixed(2)})`);
+            const op = this.opacity;
+            const segments = 28;
+            const dx = Math.cos(this.angle);
+            const dy = Math.sin(this.angle);
+            const maxW = this.width * 2.8;
+            const nx = -dy;
+            const ny = dx;
 
             ctx.save();
-            ctx.strokeStyle = grad;
-            ctx.lineWidth = this.width;
-            ctx.lineCap = 'round';
-            ctx.beginPath();
-            ctx.moveTo(tailX, tailY);
-            ctx.lineTo(this.x, this.y);
-            ctx.stroke();
 
-            // Bright glowing head
-            const headGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
-            headGlow.addColorStop(0, `rgba(255,255,255,${this.opacity.toFixed(2)})`);
-            headGlow.addColorStop(0.3, `rgba(${r},${g},${b},${(this.opacity*0.8).toFixed(2)})`);
-            headGlow.addColorStop(1, `rgba(${r},${g},${b},0)`);
-            ctx.fillStyle = headGlow;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
-            ctx.fill();
+            // Tapered trail: wide at head, zero-width at tail
+            for (let i = 0; i < segments; i++) {
+                const t0 = i / segments;
+                const t1 = (i + 1) / segments;
+                const x0 = this.x - dx * this.length * (1 - t0);
+                const y0 = this.y - dy * this.length * (1 - t0);
+                const x1 = this.x - dx * this.length * (1 - t1);
+                const y1 = this.y - dy * this.length * (1 - t1);
+                const w0 = maxW * t0 * t0;
+                const w1 = maxW * t1 * t1;
+                const a0 = op * t0 * 0.8;
+                const a1 = op * t1 * 0.8;
 
-            // Tiny bright core
-            ctx.fillStyle = `rgba(255,255,255,${this.opacity.toFixed(2)})`;
+                ctx.beginPath();
+                ctx.moveTo(x0 + nx * w0 / 2, y0 + ny * w0 / 2);
+                ctx.lineTo(x0 - nx * w0 / 2, y0 - ny * w0 / 2);
+                ctx.lineTo(x1 - nx * w1 / 2, y1 - ny * w1 / 2);
+                ctx.lineTo(x1 + nx * w1 / 2, y1 + ny * w1 / 2);
+                ctx.closePath();
+                const sg = ctx.createLinearGradient(x0, y0, x1, y1);
+                sg.addColorStop(0, `rgba(${r},${g},${b},${Math.min(a0,1).toFixed(3)})`);
+                sg.addColorStop(1, `rgba(${r},${g},${b},${Math.min(a1,1).toFixed(3)})`);
+                ctx.fillStyle = sg;
+                ctx.fill();
+            }
+
+            // Tight glow at tip only — radius matches head width, not a big blob
+            const glowR = maxW * 1.6;
+            const hg = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowR);
+            hg.addColorStop(0, `rgba(255,255,255,${(op*0.95).toFixed(2)})`);
+            hg.addColorStop(0.35, `rgba(${r},${g},${b},${(op*0.5).toFixed(2)})`);
+            hg.addColorStop(1, `rgba(${r},${g},${b},0)`);
+            ctx.fillStyle = hg;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, glowR, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.restore();
