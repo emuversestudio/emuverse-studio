@@ -104,7 +104,7 @@
             50% { opacity: 1; }
         }
 
-        /* Shooting stars - correct direction */
+        /* Shooting stars - correct direction with proper angles */
         .shooting-star {
             position: absolute;
             width: 2px;
@@ -115,12 +115,16 @@
                 rgba(255, 255, 255, 0.95) 100%);
             filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.8))
                     drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
-            animation: shooting 4.5s linear infinite;
         }
 
-        @keyframes shooting {
+        /* 30 degree angle */
+        .shooting-star.angle-30 {
+            animation: shooting-30 4.5s linear infinite;
+        }
+
+        @keyframes shooting-30 {
             0% {
-                transform: translateX(-100px) translateY(-100vh) rotate(45deg);
+                transform: translateX(-50px) translateY(-100vh) rotate(30deg);
                 opacity: 0;
             }
             8% {
@@ -130,7 +134,51 @@
                 opacity: 1;
             }
             100% {
-                transform: translateX(200px) translateY(100vh) rotate(45deg);
+                transform: translateX(115px) translateY(100vh) rotate(30deg);
+                opacity: 0;
+            }
+        }
+
+        /* 45 degree angle */
+        .shooting-star.angle-45 {
+            animation: shooting-45 4.5s linear infinite;
+        }
+
+        @keyframes shooting-45 {
+            0% {
+                transform: translateX(-70px) translateY(-100vh) rotate(45deg);
+                opacity: 0;
+            }
+            8% {
+                opacity: 1;
+            }
+            92% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(140px) translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* 60 degree angle */
+        .shooting-star.angle-60 {
+            animation: shooting-60 4.5s linear infinite;
+        }
+
+        @keyframes shooting-60 {
+            0% {
+                transform: translateX(-120px) translateY(-100vh) rotate(60deg);
+                opacity: 0;
+            }
+            8% {
+                opacity: 1;
+            }
+            92% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(115px) translateY(100vh) rotate(60deg);
                 opacity: 0;
             }
         }
@@ -977,10 +1025,12 @@ function generateStars() {
         starfield.appendChild(star);
     }
 
-    // Shooting stars - correct diagonal direction
+    // Shooting stars - different angles (30°, 45°, 60°)
+    const angles = ['angle-30', 'angle-45', 'angle-60'];
     for (let i = 0; i < 6; i++) {
         const meteor = document.createElement('div');
-        meteor.className = 'shooting-star';
+        const angle = angles[i % angles.length];
+        meteor.className = `shooting-star ${angle}`;
         meteor.style.left = Math.random() * 80 + '%';
         meteor.style.top = Math.random() * 50 + '%';
         meteor.style.animationDelay = (i * 4.5) + 's';
