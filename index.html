@@ -50,15 +50,7 @@
         .layer-base {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 2000px at 0% 0%, rgba(124, 77, 255, 0.3) 0%, transparent 50%),
-                        radial-gradient(ellipse 2000px at 100% 100%, rgba(0, 229, 255, 0.25) 0%, transparent 50%),
-                        linear-gradient(135deg, #0a0a15 0%, #15101f 50%, #0a0a15 100%);
-            animation: gradientShift 15s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { filter: hue-rotate(0deg) brightness(1); }
-            50% { filter: hue-rotate(20deg) brightness(1.1); }
+            background: #0a0a15;
         }
 
         .starfield {
@@ -67,129 +59,6 @@
         }
 
         /* Stars drawn on canvas — no CSS star rules needed */
-
-        /* ========== METEOR / SHOOTING STAR ========== */
-        .meteor-canvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* CSS-based meteors for extra richness */
-        .meteor {
-            position: absolute;
-            top: var(--y, 10%);
-            left: var(--x, 80%);
-            width: var(--len, 120px);
-            height: var(--thick, 1.5px);
-            background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(180,200,255,0.6), transparent);
-            border-radius: 100px;
-            transform: rotate(var(--angle, -35deg));
-            transform-origin: right center;
-            animation: meteor-fall var(--speed, 1.2s) var(--delay, 0s) ease-in forwards;
-            opacity: 0;
-            box-shadow: 0 0 6px 1px rgba(200,220,255,0.4), 0 0 2px 0px rgba(255,255,255,0.8);
-        }
-
-        .meteor::before {
-            content: '';
-            position: absolute;
-            right: 0; top: 50%;
-            transform: translateY(-50%);
-            width: 4px; height: 4px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 8px 3px rgba(255,255,255,0.9), 0 0 16px 6px rgba(200,220,255,0.5);
-        }
-
-        @keyframes meteor-fall {
-            0% {
-                opacity: 0;
-                transform: rotate(var(--angle, -35deg)) translateX(0px);
-            }
-            5% { opacity: 1; }
-            85% { opacity: 1; }
-            100% {
-                opacity: 0;
-                transform: rotate(var(--angle, -35deg)) translateX(var(--travel, -600px));
-            }
-        }
-
-        /* Nebula clouds */
-        .nebula {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            mix-blend-mode: screen;
-            opacity: 0.4;
-            animation: nebula-drift 25s ease-in-out infinite;
-        }
-
-        .nebula-1 { width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(124,77,255,0.5), transparent); top: 10%; left: -20%; animation-delay: 0s; }
-        .nebula-2 { width: 500px; height: 500px; background: radial-gradient(ellipse, rgba(0,229,255,0.4), transparent); top: 40%; right: -10%; animation-delay: -5s; }
-        .nebula-3 { width: 400px; height: 400px; background: radial-gradient(ellipse, rgba(124,77,255,0.35), transparent); bottom: 5%; left: 20%; animation-delay: -10s; }
-        .nebula-4 { width: 550px; height: 550px; background: radial-gradient(ellipse, rgba(0,229,255,0.3), transparent); bottom: 20%; right: 5%; animation-delay: -15s; }
-
-        @keyframes nebula-drift {
-            0%, 100% { transform: translate(0,0) scale(1); }
-            25% { transform: translate(30px,-30px) scale(1.05); }
-            50% { transform: translate(0,50px) scale(1); }
-            75% { transform: translate(-30px,-20px) scale(0.95); }
-        }
-
-        /* Particles */
-        .particles-container { position: absolute; inset: 0; overflow: hidden; }
-
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            animation: float-particle 20s linear infinite;
-        }
-
-        .particle.small { width: 4px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 50%; box-shadow: 0 0 10px rgba(124,77,255,0.4); }
-        .particle.medium { width: 8px; height: 8px; background: rgba(0,229,255,0.4); border-radius: 50%; box-shadow: 0 0 15px rgba(0,229,255,0.6); }
-        .particle.large { width: 12px; height: 12px; background: rgba(124,77,255,0.3); border-radius: 50%; box-shadow: 0 0 20px rgba(124,77,255,0.5); }
-
-        @keyframes float-particle {
-            0% { opacity: 0; transform: translateY(100vh) translateX(0); }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(-100vh) translateX(100px); }
-        }
-
-        /* Grid background */
-        .grid-background {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(0deg, transparent 24%, rgba(124,77,255,0.05) 25%, rgba(124,77,255,0.05) 26%, transparent 27%, transparent 74%, rgba(124,77,255,0.05) 75%, rgba(124,77,255,0.05) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(124,77,255,0.05) 25%, rgba(124,77,255,0.05) 26%, transparent 27%, transparent 74%, rgba(124,77,255,0.05) 75%, rgba(124,77,255,0.05) 76%, transparent 77%, transparent);
-            background-size: 100px 100px;
-            animation: grid-scroll 30s linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes grid-scroll {
-            0% { background-position: 0 0; }
-            100% { background-position: 100px 100px; }
-        }
-
-        /* Aurora glow */
-        .aurora {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg,
-                rgba(124,77,255,0.1) 0%, rgba(0,229,255,0.15) 25%,
-                rgba(124,77,255,0.1) 50%, rgba(0,229,255,0.15) 75%,
-                rgba(124,77,255,0.1) 100%);
-            animation: aurora-wave 8s ease-in-out infinite;
-        }
-
-        @keyframes aurora-wave {
-            0%, 100% { transform: skewY(0deg) translateY(0px); opacity: 0.3; }
-            50% { transform: skewY(2deg) translateY(-20px); opacity: 0.5; }
-        }
 
         /* Mountains */
         .mountains-layer { position: absolute; width: 120%; height: 100%; bottom: 0; }
@@ -494,15 +363,10 @@
 
 <div class="background-layers">
     <div class="layer-base"></div>
-    <div class="grid-background"></div>
-    <div class="aurora"></div>
-    <div class="nebula nebula-1"></div>
-    <div class="nebula nebula-2"></div>
-    <div class="nebula nebula-3"></div>
-    <div class="nebula nebula-4"></div>
+
     <canvas id="starfield" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
     <canvas class="meteor-canvas" id="meteorCanvas"></canvas>
-    <div class="particles-container" id="particles"></div>
+
 
     <svg class="mountains-layer mountains-far" viewBox="0 0 1200 400" preserveAspectRatio="none">
         <defs><linearGradient id="mt1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:rgba(124,77,255,0.1)"/><stop offset="100%" style="stop-color:rgba(124,77,255,0.02)"/></linearGradient></defs>
@@ -894,21 +758,6 @@ function generateStars() {
     loop();
 })();
 
-// ===== PARTICLES =====
-function generateParticles() {
-    const container = document.getElementById('particles');
-    const sizes = ['small','medium','large'];
-    for (let i = 0; i < 50; i++) {
-        const el = document.createElement('div');
-        el.className = `particle ${sizes[Math.floor(Math.random()*sizes.length)]}`;
-        el.style.left = Math.random()*100 + '%';
-        el.style.top = Math.random()*100 + '%';
-        el.style.animationDuration = (15 + Math.random()*15) + 's';
-        el.style.animationDelay = Math.random()*5 + 's';
-        container.appendChild(el);
-    }
-}
-
 // ===== EMAIL COPY =====
 function copyEmail(e) {
     e.preventDefault();
@@ -946,7 +795,6 @@ window.addEventListener('scroll', () => {
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
     generateStars();
-    generateParticles();
 });
 </script>
 </body>
