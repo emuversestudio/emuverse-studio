@@ -37,8 +37,9 @@
 
         /* Footer */
         footer { text-align: center; padding: 80px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 100px; }
-        .contact-mail { color: var(--primary); font-weight: bold; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
+        .contact-mail { color: var(--primary); font-weight: bold; text-decoration: none; font-size: 1.2rem; transition: 0.3s; cursor: pointer; }
         .contact-mail:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        #copy-msg { transition: opacity 0.5s; }
     </style>
 </head>
 <body>
@@ -70,9 +71,33 @@
 
 <footer>
     <p style="color: var(--dim); margin-bottom: 12px; font-weight: 300;">For support and inquiries:</p>
-    <a href="mailto:support@emuverse.studio" class="contact-mail">support@emuverse.studio</a>
+    <a href="mailto:support@emuverse.studio" class="contact-mail" onclick="copyEmail(event)">support@emuverse.studio</a>
+    <p id="copy-msg" style="color: var(--accent); font-size: 0.75rem; margin-top: 10px; display: none; font-weight: bold;">Email address copied to clipboard!</p>
     <p style="margin-top: 40px; font-size: 0.85rem; color: var(--dim); opacity: 0.5;">© 2024 Emuverse Studio. All rights reserved.</p>
 </footer>
+
+<script>
+function copyEmail(e) {
+    const email = 'support@emuverse.studio';
+    const el = document.createElement('textarea');
+    el.value = email;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    const msg = document.getElementById('copy-msg');
+    msg.style.display = 'block';
+    msg.style.opacity = '1';
+    setTimeout(() => {
+        msg.style.opacity = '0';
+        setTimeout(() => { msg.style.display = 'none'; }, 500);
+    }, 2500);
+}
+</script>
 
 </body>
 </html>
