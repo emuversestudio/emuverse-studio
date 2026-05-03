@@ -104,7 +104,44 @@
             50% { opacity: 1; }
         }
 
+        /* SHOOTING STAR EFFECT */
+        .shooting-star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(90deg, #fff, transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            animation: shoot 2s linear forwards;
+            opacity: 0;
+            z-index: 5;
+        }
 
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, #fff, transparent);
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: rotate(315deg) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(315deg) translateX(-1000px);
+                opacity: 0;
+            }
+        }
 
         /* Nebula clouds */
         .nebula {
@@ -931,6 +968,27 @@
 </div>
 
 <script>
+// ========== SHOOTING STAR GENERATION ==========
+function createShootingStar() {
+    const starfield = document.getElementById('starfield');
+    const star = document.createElement('div');
+    star.className = 'shooting-star';
+    
+    // Random position from top-right area
+    star.style.top = Math.random() * 40 + '%';
+    star.style.left = (Math.random() * 50 + 50) + '%';
+    
+    // Random duration for more natural look
+    star.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+    
+    starfield.appendChild(star);
+    
+    // Remove after animation to keep DOM clean
+    setTimeout(() => {
+        star.remove();
+    }, 3000);
+}
+
 // ========== STAR GENERATION ==========
 function generateStars() {
     const starfield = document.getElementById('starfield');
@@ -946,7 +1004,6 @@ function generateStars() {
         star.style.animationDelay = Math.random() * 3 + 's';
         starfield.appendChild(star);
     }
-
 }
 
 // ========== PARTICLE EFFECTS ==========
@@ -998,11 +1055,6 @@ function showCopyMsg() {
     setTimeout(() => msg.classList.remove('show'), 2500);
 }
 
-function showWaitlist(e) {
-    e.preventDefault();
-    alert('Waitlist signup coming soon! Follow our social media for updates.');
-}
-
 // ========== PARALLAX SCROLL ==========
 window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
@@ -1016,6 +1068,13 @@ window.addEventListener('scroll', () => {
 document.addEventListener('DOMContentLoaded', () => {
     generateStars();
     generateParticles();
+    
+    // Trigger shooting stars at random intervals
+    setInterval(() => {
+        if (Math.random() > 0.4) { // %60 chance to spawn
+            createShootingStar();
+        }
+    }, 4000);
 });
 </script>
 
