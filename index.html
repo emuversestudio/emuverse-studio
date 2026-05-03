@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emuverse Studio | Electronic Mobile Universe</title>
+    <title>Emuverse Studio | Retro Games & Apps</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,49 +12,67 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; line-height: 1.6; }
-        header { padding: 80px 20px; text-align: center; background: radial-gradient(circle at center, #1a1a30 0%, var(--bg) 80%); }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: var(--primary); letter-spacing: 4px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(124, 77, 255, 0.4); }
-        .subtitle { color: var(--accent); letter-spacing: 2px; font-weight: 300; text-transform: uppercase; font-size: 0.9rem; }
+        
+        /* Header */
+        header { padding: 100px 20px; text-align: center; background: radial-gradient(circle at center, #1a1a30 0%, var(--bg) 80%); }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--primary); letter-spacing: 6px; margin-bottom: 10px; text-shadow: 0 0 25px rgba(124, 77, 255, 0.6); }
+        .subtitle { color: var(--accent); letter-spacing: 4px; font-weight: 700; text-transform: uppercase; font-size: 1.2rem; margin-top: 5px; }
+
+        /* Projects Section */
         .container { max-width: 1000px; margin: 40px auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 30px; transition: 0.3s; position: relative; overflow: hidden; }
-        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card h2 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; font-size: 1.5rem; }
-        .card p { color: var(--dim); margin-bottom: 20px; font-size: 0.95rem; }
-        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; margin-bottom: 10px; }
-        .emu-badge { background: rgba(124, 77, 255, 0.2); color: var(--primary); border: 1px solid var(--primary); }
-        .slide-badge { background: rgba(0, 229, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
-        .btn { display: inline-block; padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; }
-        .policy-link { display: block; margin-top: 20px; color: var(--accent); font-size: 0.8rem; text-decoration: none; opacity: 0.7; }
-        .policy-link:hover { opacity: 1; }
-        footer { text-align: center; padding: 60px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 100px; }
-        .contact-mail { color: var(--primary); font-weight: bold; text-decoration: none; font-size: 1.1rem; }
+        .card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 35px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-12px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .card h2 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; font-size: 1.6rem; color: #fff; }
+        .card p { color: var(--dim); margin-bottom: 25px; font-size: 1rem; font-weight: 300; }
+        
+        .badge { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; margin-bottom: 15px; letter-spacing: 1px; }
+        .emu-badge { background: rgba(124, 77, 255, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+        .slide-badge { background: rgba(0, 229, 255, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+        
+        /* Links */
+        .btn { display: inline-block; padding: 12px 24px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 0.95rem; transition: 0.3s; }
+        .btn:hover { background: #6200ea; transform: scale(1.05); }
+        .policy-link { display: block; margin-top: 25px; color: var(--accent); font-size: 0.85rem; text-decoration: none; opacity: 0.6; transition: 0.3s; }
+        .policy-link:hover { opacity: 1; text-decoration: underline; }
+
+        /* Footer */
+        footer { text-align: center; padding: 80px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 100px; }
+        .contact-mail { color: var(--primary); font-weight: bold; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
+        .contact-mail:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
     </style>
 </head>
 <body>
+
 <header>
     <h1>EMUVERSE STUDIO</h1>
-    <p class="subtitle">Electronic Mobile Universe</p>
+    <p class="subtitle">RETRO GAMES</p>
 </header>
+
 <div class="container">
+    <!-- Emuverse Retro Games -->
     <div class="card">
-        <div class="badge emu-badge">UTILITY / EMULATION</div>
-        <h2>Emuverse</h2>
-        <p>The most powerful retro gaming emulator for Android. High-performance, multi-console support, and immersive UI.</p>
+        <div class="badge emu-badge">EMULATION / CONSOLE</div>
+        <h2>Emuverse Retro Games</h2>
+        <p>The ultimate all-in-one retro gaming emulator. Relive the classics with high-performance emulation and a premium user interface.</p>
         <a href="#" class="btn">View on Play Store</a>
         <a href="privacy-emuverse.html" class="policy-link">Privacy Policy</a>
     </div>
+
+    <!-- Slide Clash Arena -->
     <div class="card">
-        <div class="badge slide-badge">MULTIPLAYER / PUZZLE</div>
+        <div class="badge slide-badge">MULTIPLAYER / ARCADE</div>
         <h2>Slide Clash Arena</h2>
-        <p>Intense real-time multiplayer sliding puzzle battles. Strategy meets speed in the ultimate arena.</p>
+        <p>Experience fast-paced multiplayer puzzle combat. Challenge players worldwide in the most intense sliding arena ever created.</p>
         <a href="#" class="btn" style="background: var(--accent); color: #000;">Coming Soon</a>
         <a href="privacy-slide-clash.html" class="policy-link">Privacy Policy</a>
     </div>
 </div>
+
 <footer>
-    <p style="color: var(--dim); margin-bottom: 10px;">For support and inquiries:</p>
+    <p style="color: var(--dim); margin-bottom: 12px; font-weight: 300;">For support and inquiries:</p>
     <a href="mailto:support@emuverse.studio" class="contact-mail">support@emuverse.studio</a>
-    <p style="margin-top: 40px; font-size: 0.8rem; color: var(--dim);">© 2024 Emuverse Studio. All rights reserved.</p>
+    <p style="margin-top: 40px; font-size: 0.85rem; color: var(--dim); opacity: 0.5;">© 2024 Emuverse Studio. All rights reserved.</p>
 </footer>
+
 </body>
 </html>
