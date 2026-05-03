@@ -26,9 +26,7 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
             background: var(--bg);
@@ -39,19 +37,16 @@
             position: relative;
         }
 
-        /* ========== MULTI-LAYER ANIMATED BACKGROUND ========== */
+        /* ========== BACKGROUND LAYERS ========== */
         .background-layers {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
         }
 
-        /* Base gradient layer */
         .layer-base {
             position: absolute;
             inset: 0;
@@ -62,84 +57,110 @@
         }
 
         @keyframes gradientShift {
-            0%, 100% {
-                filter: hue-rotate(0deg) brightness(1);
-            }
-            50% {
-                filter: hue-rotate(20deg) brightness(1.1);
-            }
+            0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(20deg) brightness(1.1); }
         }
 
-        /* Animated starfield */
         .starfield {
             position: absolute;
             inset: 0;
-            animation: subtle-float 20s ease-in-out infinite;
         }
 
-        @keyframes subtle-float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(10px); }
-        }
-
+        /* ========== STAR STYLES ========== */
         .star {
             position: absolute;
-            background: radial-gradient(circle, #fff, transparent);
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            animation: twinkle 3s infinite;
+            animation: twinkle var(--dur, 3s) var(--delay, 0s) infinite ease-in-out;
         }
 
-        .star.bright {
-            animation: twinkle-bright 2s infinite;
-        }
+        .star.s1 { background: radial-gradient(circle, #ffffff, rgba(200,220,255,0)); box-shadow: 0 0 4px 1px rgba(255,255,255,0.6); }
+        .star.s2 { background: radial-gradient(circle, #c8d4ff, rgba(200,210,255,0)); box-shadow: 0 0 6px 2px rgba(180,200,255,0.5); }
+        .star.s3 { background: radial-gradient(circle, #00E5FF, rgba(0,229,255,0)); box-shadow: 0 0 8px 3px rgba(0,229,255,0.5); }
+        .star.s4 { background: radial-gradient(circle, #7C4DFF, rgba(124,77,255,0)); box-shadow: 0 0 8px 3px rgba(124,77,255,0.5); }
+        .star.bright { box-shadow: 0 0 12px 4px rgba(255,255,255,0.9), 0 0 24px 8px rgba(200,220,255,0.4); }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
+            0%, 100% { opacity: var(--min-op, 0.15); transform: scale(1); }
+            50% { opacity: var(--max-op, 1); transform: scale(var(--scale, 1.3)); }
         }
 
-        @keyframes twinkle-bright {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        /* SHOOTING STAR EFFECT */
-        .shooting-star {
+        /* ========== STAR CROSS (4-pointed) ========== */
+        .star-cross {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 2px;
-            background: linear-gradient(90deg, #fff, transparent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
-            animation: shoot 2s linear forwards;
-            opacity: 0;
-            z-index: 5;
+            animation: cross-twinkle var(--dur, 4s) var(--delay, 0s) infinite ease-in-out;
         }
 
-        .shooting-star::before {
+        .star-cross::before, .star-cross::after {
             content: '';
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 80px;
-            height: 1px;
-            background: linear-gradient(90deg, #fff, transparent);
+            background: white;
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        @keyframes shoot {
+        .star-cross::before {
+            width: var(--size, 2px);
+            height: calc(var(--size, 2px) * 5);
+        }
+
+        .star-cross::after {
+            width: calc(var(--size, 2px) * 5);
+            height: var(--size, 2px);
+        }
+
+        @keyframes cross-twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            30% { opacity: 0; }
+            50% { opacity: 1; transform: scale(1) rotate(45deg); }
+            70% { opacity: 0; }
+        }
+
+        /* ========== METEOR / SHOOTING STAR ========== */
+        .meteor-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* CSS-based meteors for extra richness */
+        .meteor {
+            position: absolute;
+            top: var(--y, 10%);
+            left: var(--x, 80%);
+            width: var(--len, 120px);
+            height: var(--thick, 1.5px);
+            background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(180,200,255,0.6), transparent);
+            border-radius: 100px;
+            transform: rotate(var(--angle, -35deg));
+            transform-origin: right center;
+            animation: meteor-fall var(--speed, 1.2s) var(--delay, 0s) ease-in forwards;
+            opacity: 0;
+            box-shadow: 0 0 6px 1px rgba(200,220,255,0.4), 0 0 2px 0px rgba(255,255,255,0.8);
+        }
+
+        .meteor::before {
+            content: '';
+            position: absolute;
+            right: 0; top: 50%;
+            transform: translateY(-50%);
+            width: 4px; height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 3px rgba(255,255,255,0.9), 0 0 16px 6px rgba(200,220,255,0.5);
+        }
+
+        @keyframes meteor-fall {
             0% {
-                transform: rotate(315deg) translateX(0);
                 opacity: 0;
+                transform: rotate(var(--angle, -35deg)) translateX(0px);
             }
-            10% {
-                opacity: 1;
-            }
+            5% { opacity: 1; }
+            85% { opacity: 1; }
             100% {
-                transform: rotate(315deg) translateX(-1000px);
                 opacity: 0;
+                transform: rotate(var(--angle, -35deg)) translateX(var(--travel, -600px));
             }
         }
 
@@ -153,63 +174,20 @@
             animation: nebula-drift 25s ease-in-out infinite;
         }
 
-        .nebula-1 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(ellipse at center, rgba(124, 77, 255, 0.5), transparent);
-            top: 10%;
-            left: -20%;
-            animation-delay: 0s;
-        }
-
-        .nebula-2 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.4), transparent);
-            top: 40%;
-            right: -10%;
-            animation-delay: -5s;
-        }
-
-        .nebula-3 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(ellipse at center, rgba(124, 77, 255, 0.35), transparent);
-            bottom: 5%;
-            left: 20%;
-            animation-delay: -10s;
-        }
-
-        .nebula-4 {
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.3), transparent);
-            bottom: 20%;
-            right: 5%;
-            animation-delay: -15s;
-        }
+        .nebula-1 { width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(124,77,255,0.5), transparent); top: 10%; left: -20%; animation-delay: 0s; }
+        .nebula-2 { width: 500px; height: 500px; background: radial-gradient(ellipse, rgba(0,229,255,0.4), transparent); top: 40%; right: -10%; animation-delay: -5s; }
+        .nebula-3 { width: 400px; height: 400px; background: radial-gradient(ellipse, rgba(124,77,255,0.35), transparent); bottom: 5%; left: 20%; animation-delay: -10s; }
+        .nebula-4 { width: 550px; height: 550px; background: radial-gradient(ellipse, rgba(0,229,255,0.3), transparent); bottom: 20%; right: 5%; animation-delay: -15s; }
 
         @keyframes nebula-drift {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            25% {
-                transform: translate(30px, -30px) scale(1.05);
-            }
-            50% {
-                transform: translate(0, 50px) scale(1);
-            }
-            75% {
-                transform: translate(-30px, -20px) scale(0.95);
-            }
+            0%, 100% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(30px,-30px) scale(1.05); }
+            50% { transform: translate(0,50px) scale(1); }
+            75% { transform: translate(-30px,-20px) scale(0.95); }
         }
 
-        /* Particle effects */
-        .particles-container {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-        }
+        /* Particles */
+        .particles-container { position: absolute; inset: 0; overflow: hidden; }
 
         .particle {
             position: absolute;
@@ -217,66 +195,32 @@
             animation: float-particle 20s linear infinite;
         }
 
-        .particle.small {
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(124, 77, 255, 0.4);
-        }
-
-        .particle.medium {
-            width: 8px;
-            height: 8px;
-            background: rgba(0, 229, 255, 0.4);
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
-        }
-
-        .particle.large {
-            width: 12px;
-            height: 12px;
-            background: rgba(124, 77, 255, 0.3);
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(124, 77, 255, 0.5);
-        }
+        .particle.small { width: 4px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 50%; box-shadow: 0 0 10px rgba(124,77,255,0.4); }
+        .particle.medium { width: 8px; height: 8px; background: rgba(0,229,255,0.4); border-radius: 50%; box-shadow: 0 0 15px rgba(0,229,255,0.6); }
+        .particle.large { width: 12px; height: 12px; background: rgba(124,77,255,0.3); border-radius: 50%; box-shadow: 0 0 20px rgba(124,77,255,0.5); }
 
         @keyframes float-particle {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh) translateX(0);
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) translateX(100px);
-            }
+            0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100vh) translateX(100px); }
         }
 
-        /* Animated grid background */
+        /* Grid background */
         .grid-background {
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(0deg, transparent 24%, rgba(124, 77, 255, 0.05) 25%, rgba(124, 77, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(124, 77, 255, 0.05) 75%, rgba(124, 77, 255, 0.05) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(124, 77, 255, 0.05) 25%, rgba(124, 77, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(124, 77, 255, 0.05) 75%, rgba(124, 77, 255, 0.05) 76%, transparent 77%, transparent);
+                linear-gradient(0deg, transparent 24%, rgba(124,77,255,0.05) 25%, rgba(124,77,255,0.05) 26%, transparent 27%, transparent 74%, rgba(124,77,255,0.05) 75%, rgba(124,77,255,0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(124,77,255,0.05) 25%, rgba(124,77,255,0.05) 26%, transparent 27%, transparent 74%, rgba(124,77,255,0.05) 75%, rgba(124,77,255,0.05) 76%, transparent 77%, transparent);
             background-size: 100px 100px;
             animation: grid-scroll 30s linear infinite;
             opacity: 0.3;
         }
 
         @keyframes grid-scroll {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 100px 100px;
-            }
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
         }
 
         /* Aurora glow */
@@ -284,79 +228,39 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(90deg,
-                rgba(124, 77, 255, 0.1) 0%,
-                rgba(0, 229, 255, 0.15) 25%,
-                rgba(124, 77, 255, 0.1) 50%,
-                rgba(0, 229, 255, 0.15) 75%,
-                rgba(124, 77, 255, 0.1) 100%);
+                rgba(124,77,255,0.1) 0%, rgba(0,229,255,0.15) 25%,
+                rgba(124,77,255,0.1) 50%, rgba(0,229,255,0.15) 75%,
+                rgba(124,77,255,0.1) 100%);
             animation: aurora-wave 8s ease-in-out infinite;
         }
 
         @keyframes aurora-wave {
-            0%, 100% {
-                transform: skewY(0deg) translateY(0px);
-                opacity: 0.3;
-            }
-            50% {
-                transform: skewY(2deg) translateY(-20px);
-                opacity: 0.5;
-            }
+            0%, 100% { transform: skewY(0deg) translateY(0px); opacity: 0.3; }
+            50% { transform: skewY(2deg) translateY(-20px); opacity: 0.5; }
         }
 
-        /* Floating mountains parallax */
-        .mountains-layer {
-            position: absolute;
-            width: 120%;
-            height: 100%;
-            bottom: 0;
-            animation: mountains-sway 15s ease-in-out infinite;
-        }
-
-        .mountains-far {
-            opacity: 0.15;
-            animation-delay: -3s;
-        }
-
-        .mountains-mid {
-            opacity: 0.25;
-            animation-delay: -6s;
-        }
-
-        .mountains-close {
-            opacity: 0.35;
-            animation-delay: -9s;
-        }
+        /* Mountains */
+        .mountains-layer { position: absolute; width: 120%; height: 100%; bottom: 0; }
+        .mountains-far { opacity: 0.15; animation: mountains-sway 15s ease-in-out infinite; animation-delay: -3s; }
+        .mountains-mid { opacity: 0.25; animation: mountains-sway 15s ease-in-out infinite; animation-delay: -6s; }
+        .mountains-close { opacity: 0.35; animation: mountains-sway 15s ease-in-out infinite; animation-delay: -9s; }
 
         @keyframes mountains-sway {
-            0%, 100% {
-                transform: translateX(0px) translateY(0px);
-            }
-            25% {
-                transform: translateX(10px) translateY(-10px);
-            }
-            50% {
-                transform: translateX(-10px) translateY(0px);
-            }
-            75% {
-                transform: translateX(10px) translateY(10px);
-            }
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(10px) translateY(-10px); }
+            50% { transform: translateX(-10px) translateY(0); }
+            75% { transform: translateX(10px) translateY(10px); }
         }
 
-        /* Animated vignette */
         .vignette {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%);
         }
 
-        /* ========== CONTENT LAYERS ========== */
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-        }
+        /* ========== CONTENT ========== */
+        .content-wrapper { position: relative; z-index: 10; }
 
-        /* Header */
         header {
             padding: 100px 20px 150px;
             text-align: center;
@@ -374,24 +278,14 @@
             color: var(--primary);
             letter-spacing: 15px;
             margin-bottom: 20px;
-            text-shadow: 0 0 50px rgba(124, 77, 255, 0.7),
-                         0 0 100px rgba(124, 77, 255, 0.4),
-                         0 0 150px rgba(0, 229, 255, 0.2);
+            text-shadow: 0 0 50px rgba(124,77,255,0.7), 0 0 100px rgba(124,77,255,0.4), 0 0 150px rgba(0,229,255,0.2);
             font-weight: 700;
             animation: title-glow 3s ease-in-out infinite;
         }
 
         @keyframes title-glow {
-            0%, 100% {
-                text-shadow: 0 0 50px rgba(124, 77, 255, 0.7),
-                             0 0 100px rgba(124, 77, 255, 0.4),
-                             0 0 150px rgba(0, 229, 255, 0.2);
-            }
-            50% {
-                text-shadow: 0 0 60px rgba(124, 77, 255, 0.9),
-                             0 0 120px rgba(124, 77, 255, 0.6),
-                             0 0 180px rgba(0, 229, 255, 0.4);
-            }
+            0%, 100% { text-shadow: 0 0 50px rgba(124,77,255,0.7), 0 0 100px rgba(124,77,255,0.4), 0 0 150px rgba(0,229,255,0.2); }
+            50% { text-shadow: 0 0 60px rgba(124,77,255,0.9), 0 0 120px rgba(124,77,255,0.6), 0 0 180px rgba(0,229,255,0.4); }
         }
 
         .subtitle {
@@ -401,17 +295,13 @@
             text-transform: uppercase;
             font-size: 1.3rem;
             margin-top: 25px;
-            text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+            text-shadow: 0 0 30px rgba(0,229,255,0.5);
             animation: subtitle-glow 2.5s ease-in-out infinite;
         }
 
         @keyframes subtitle-glow {
-            0%, 100% {
-                text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 40px rgba(0, 229, 255, 0.8);
-            }
+            0%, 100% { text-shadow: 0 0 30px rgba(0,229,255,0.5); }
+            50% { text-shadow: 0 0 40px rgba(0,229,255,0.8); }
         }
 
         .tagline {
@@ -425,23 +315,13 @@
             animation: fade-in 1.5s ease-out 0.5s both;
         }
 
-        .cta-button {
-            margin-top: 60px;
-            animation: fade-in 1.5s ease-out 0.7s both;
-        }
+        .cta-button { margin-top: 60px; animation: fade-in 1.5s ease-out 0.7s both; }
 
         @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 100px auto;
@@ -451,11 +331,10 @@
             gap: 40px;
         }
 
-        /* Cards - Keep Simple */
         .card {
-            background: rgba(18, 18, 32, 0.85);
+            background: rgba(18,18,32,0.85);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(124, 77, 255, 0.25);
+            border: 1px solid rgba(124,77,255,0.25);
             border-radius: 24px;
             padding: 50px 40px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -467,28 +346,18 @@
         }
 
         @keyframes card-appear {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .card:nth-child(2) {
-            animation-delay: 0.2s;
-        }
+        .card:nth-child(2) { animation-delay: 0.2s; }
 
         .card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.2), transparent);
+            top: -50%; right: -50%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(0,229,255,0.2), transparent);
             border-radius: 50%;
             opacity: 0;
             transition: opacity 0.4s;
@@ -497,13 +366,10 @@
         .card:hover {
             transform: translateY(-20px);
             border-color: var(--accent);
-            box-shadow: 0 30px 80px rgba(124, 77, 255, 0.25),
-                        0 0 60px rgba(0, 229, 255, 0.15);
+            box-shadow: 0 30px 80px rgba(124,77,255,0.25), 0 0 60px rgba(0,229,255,0.15);
         }
 
-        .card:hover::before {
-            opacity: 1;
-        }
+        .card:hover::before { opacity: 1; }
 
         .card-content {
             position: relative;
@@ -526,17 +392,8 @@
             transition: 0.3s;
         }
 
-        .emu-badge {
-            background: rgba(124, 77, 255, 0.3);
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
-
-        .slide-badge {
-            background: rgba(0, 229, 255, 0.3);
-            color: var(--accent);
-            border: 1.5px solid var(--accent);
-        }
+        .emu-badge { background: rgba(124,77,255,0.3); color: var(--primary); border: 1.5px solid var(--primary); }
+        .slide-badge { background: rgba(0,229,255,0.3); color: var(--accent); border: 1.5px solid var(--accent); }
 
         .card h2 {
             font-family: 'Orbitron', sans-serif;
@@ -551,20 +408,9 @@
             background-clip: text;
         }
 
-        .card p {
-            color: var(--dim);
-            margin-bottom: 30px;
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.9;
-            flex-grow: 1;
-        }
+        .card p { color: var(--dim); margin-bottom: 30px; font-size: 1rem; font-weight: 300; line-height: 1.9; flex-grow: 1; }
 
-        .features {
-            list-style: none;
-            margin: 30px 0;
-            padding: 0;
-        }
+        .features { list-style: none; margin: 30px 0; padding: 0; }
 
         .features li {
             padding: 12px 0;
@@ -574,20 +420,9 @@
             gap: 12px;
         }
 
-        .features li::before {
-            content: '▸';
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-        }
+        .features li::before { content: '▸'; color: var(--accent); font-weight: bold; font-size: 1.4rem; flex-shrink: 0; }
 
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: auto;
-        }
+        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
 
         .btn {
             display: inline-flex;
@@ -612,55 +447,25 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.5s;
         }
 
-        .btn:hover::before {
-            transform: scaleX(1);
-        }
+        .btn:hover::before { transform: scaleX(1); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(124,77,255,0.5); }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 50px rgba(124, 77, 255, 0.5);
-        }
+        .btn span { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
 
-        .btn span {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 229, 255, 0.15);
-            box-shadow: 0 15px 35px rgba(0, 229, 255, 0.3);
-        }
-
-        .btn-disabled {
-            background: rgba(0, 229, 255, 0.1);
-            color: var(--accent);
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
+        .btn-secondary { background: transparent; color: var(--accent); border-color: var(--accent); }
+        .btn-secondary:hover { background: rgba(0,229,255,0.15); box-shadow: 0 15px 35px rgba(0,229,255,0.3); }
+        .btn-disabled { background: rgba(0,229,255,0.1); color: var(--accent); opacity: 0.5; cursor: not-allowed; }
+        .btn-disabled:hover { transform: none; box-shadow: none; }
 
         .coming-soon {
             padding: 4px 12px;
-            background: rgba(255, 107, 107, 0.2);
+            background: rgba(255,107,107,0.2);
             color: var(--danger);
             border-radius: 8px;
             font-size: 0.75rem;
@@ -673,7 +478,7 @@
         .card-footer {
             margin-top: 30px;
             padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -681,45 +486,21 @@
             gap: 15px;
         }
 
-        .policy-link {
-            color: var(--accent);
-            font-size: 0.8rem;
-            text-decoration: none;
-            opacity: 0.6;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
+        .policy-link { color: var(--accent); font-size: 0.8rem; text-decoration: none; opacity: 0.6; transition: all 0.3s; letter-spacing: 0.5px; font-weight: 600; }
+        .policy-link:hover { opacity: 1; transform: translateX(4px); }
 
-        .policy-link:hover {
-            opacity: 1;
-            transform: translateX(4px);
-        }
-
-        /* Footer */
         footer {
             position: relative;
             z-index: 10;
             text-align: center;
             padding: 100px 20px 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255,255,255,0.08);
             margin-top: 100px;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
         }
 
-        .footer-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .footer-label {
-            color: var(--dim);
-            margin-bottom: 15px;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-        }
+        .footer-content { max-width: 600px; margin: 0 auto; }
+        .footer-label { color: var(--dim); margin-bottom: 15px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; font-size: 0.85rem; }
 
         .contact-mail {
             color: var(--primary);
@@ -731,152 +512,63 @@
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
             display: inline-block;
-            text-shadow: 0 0 20px rgba(124, 77, 255, 0.5);
+            text-shadow: 0 0 20px rgba(124,77,255,0.5);
         }
 
-        .contact-mail:hover {
-            color: var(--accent);
-            text-shadow: 0 0 30px var(--accent);
-            transform: scale(1.1);
-        }
+        .contact-mail:hover { color: var(--accent); text-shadow: 0 0 30px var(--accent); transform: scale(1.1); }
 
-        #copy-msg {
-            transition: all 0.5s;
-            font-family: 'Orbitron', sans-serif;
-            color: #4CAF50;
-            margin-top: 15px;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            opacity: 0;
-        }
+        #copy-msg { transition: all 0.5s; font-family: 'Orbitron', sans-serif; color: #4CAF50; margin-top: 15px; font-size: 0.8rem; letter-spacing: 2px; opacity: 0; }
+        #copy-msg.show { opacity: 1; }
 
-        #copy-msg.show {
-            opacity: 1;
-        }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-top: 40px; flex-wrap: wrap; }
+        .footer-link { color: var(--dim); text-decoration: none; font-size: 0.85rem; transition: all 0.3s; letter-spacing: 1px; }
+        .footer-link:hover { color: var(--accent); transform: translateY(-3px); text-shadow: 0 0 15px var(--accent); }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
+        .copyright { margin-top: 40px; font-size: 0.75rem; color: var(--dim); opacity: 0.2; letter-spacing: 1px; }
 
-        .footer-link {
-            color: var(--dim);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-            letter-spacing: 1px;
-        }
-
-        .footer-link:hover {
-            color: var(--accent);
-            transform: translateY(-3px);
-            text-shadow: 0 0 15px var(--accent);
-        }
-
-        .copyright {
-            margin-top: 40px;
-            font-size: 0.75rem;
-            color: var(--dim);
-            opacity: 0.2;
-            letter-spacing: 1px;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            h1 {
-                letter-spacing: 8px;
-                font-size: 2.5rem;
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                margin: 60px auto;
-            }
-
-            .card {
-                padding: 35px 25px;
-            }
-
-            .btn {
-                width: 100%;
-            }
+            h1 { letter-spacing: 8px; font-size: 2.5rem; }
+            .container { grid-template-columns: 1fr; gap: 30px; margin: 60px auto; }
+            .card { padding: 35px 25px; }
+            .btn { width: 100%; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
-            }
+            * { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
 
-<!-- ========== RICH ANIMATED BACKGROUND ========== -->
 <div class="background-layers">
-    <!-- Base gradient -->
     <div class="layer-base"></div>
-
-    <!-- Grid background -->
     <div class="grid-background"></div>
-
-    <!-- Aurora glow -->
     <div class="aurora"></div>
-
-    <!-- Nebula clouds -->
     <div class="nebula nebula-1"></div>
     <div class="nebula nebula-2"></div>
     <div class="nebula nebula-3"></div>
     <div class="nebula nebula-4"></div>
-
-    <!-- Starfield -->
     <div class="starfield" id="starfield"></div>
-
-    <!-- Particles -->
+    <canvas class="meteor-canvas" id="meteorCanvas"></canvas>
     <div class="particles-container" id="particles"></div>
 
-    <!-- Mountains parallax layers -->
     <svg class="mountains-layer mountains-far" viewBox="0 0 1200 400" preserveAspectRatio="none">
-        <defs>
-            <linearGradient id="mt1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:rgba(124,77,255,0.1)"/>
-                <stop offset="100%" style="stop-color:rgba(124,77,255,0.02)"/>
-            </linearGradient>
-        </defs>
+        <defs><linearGradient id="mt1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:rgba(124,77,255,0.1)"/><stop offset="100%" style="stop-color:rgba(124,77,255,0.02)"/></linearGradient></defs>
         <path d="M0,300 Q300,100 600,250 T1200,300 L1200,400 L0,400 Z" fill="url(#mt1)"/>
     </svg>
-
     <svg class="mountains-layer mountains-mid" viewBox="0 0 1200 400" preserveAspectRatio="none">
-        <defs>
-            <linearGradient id="mt2" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:rgba(0,229,255,0.12)"/>
-                <stop offset="100%" style="stop-color:rgba(0,229,255,0.03)"/>
-            </linearGradient>
-        </defs>
+        <defs><linearGradient id="mt2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:rgba(0,229,255,0.12)"/><stop offset="100%" style="stop-color:rgba(0,229,255,0.03)"/></linearGradient></defs>
         <path d="M0,250 Q200,80 400,200 T800,280 T1200,250 L1200,400 L0,400 Z" fill="url(#mt2)"/>
     </svg>
-
     <svg class="mountains-layer mountains-close" viewBox="0 0 1200 400" preserveAspectRatio="none">
-        <defs>
-            <linearGradient id="mt3" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:rgba(124,77,255,0.15)"/>
-                <stop offset="100%" style="stop-color:rgba(124,77,255,0.04)"/>
-            </linearGradient>
-        </defs>
+        <defs><linearGradient id="mt3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:rgba(124,77,255,0.15)"/><stop offset="100%" style="stop-color:rgba(124,77,255,0.04)"/></linearGradient></defs>
         <path d="M0,200 Q150,50 300,150 T600,180 T900,140 T1200,200 L1200,400 L0,400 Z" fill="url(#mt3)"/>
     </svg>
 
-    <!-- Vignette -->
     <div class="vignette"></div>
 </div>
 
-<!-- ========== CONTENT ========== -->
 <div class="content-wrapper">
-    <!-- HEADER -->
     <header>
         <h1>EMUVERSE STUDIO</h1>
         <p class="subtitle">PREMIUM RETRO GAMING</p>
@@ -888,15 +580,12 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main class="container">
-        <!-- Emuverse Retro Games -->
         <div class="card">
             <div class="card-content">
                 <div class="badge emu-badge">EMULATION / RETRO</div>
                 <h2>Emuverse Retro Games</h2>
                 <p>The ultimate all-in-one emulator featuring 20+ gaming systems. Play your favorite retro classics with high-performance emulation, manual saves, and a modern interface designed for true gamers.</p>
-
                 <ul class="features">
                     <li><strong>20+ Systems:</strong> NES, SNES, N64, PS1, PSP, Dreamcast, 3DS, GBA, and more</li>
                     <li><strong>Premium Emulation:</strong> Hardware-accelerated rendering for smooth gameplay</li>
@@ -904,13 +593,11 @@
                     <li><strong>Save States:</strong> Manual save/load system with backup support</li>
                     <li><strong>Customizable:</strong> Controller overlays, themes, and settings</li>
                 </ul>
-
                 <div class="btn-group">
                     <a href="https://play.google.com/store/apps/details?id=studio.emuverse.retro" class="btn" target="_blank" rel="noopener noreferrer">
                         <span>📱 GET ON GOOGLE PLAY</span>
                     </a>
                 </div>
-
                 <div class="card-footer">
                     <a href="privacy-emuverse.html" class="policy-link">PRIVACY POLICY</a>
                     <span style="color: var(--dim); font-size: 0.75rem;">v2.0 • May 2026</span>
@@ -918,27 +605,23 @@
             </div>
         </div>
 
-        <!-- Slide Clash Arena -->
         <div class="card">
             <div class="card-content">
                 <div class="badge slide-badge">MULTIPLAYER / ARCADE</div>
                 <h2>Slide Clash Arena <span class="coming-soon">SOON</span></h2>
                 <p>Fast-paced competitive puzzle gaming meets real-time multiplayer combat. Challenge players globally in the most intense sliding arena ever created. Featuring cross-platform play, ranked matches, and seasonal tournaments.</p>
-
                 <ul class="features">
-                    <li><strong>Real-Time Multiplayer:</strong> PvP matches with <1s latency</li>
-                    <li><strong>Cross-Platform:</strong> Android & iOS players compete together</li>
+                    <li><strong>Real-Time Multiplayer:</strong> PvP matches with &lt;1s latency</li>
+                    <li><strong>Cross-Platform:</strong> Android &amp; iOS players compete together</li>
                     <li><strong>Ranked System:</strong> Climb leaderboards and earn rewards</li>
                     <li><strong>Seasonal Events:</strong> Monthly tournaments with exclusive skins</li>
                     <li><strong>Social Features:</strong> Clans, challenges, and friend battles</li>
                 </ul>
-
                 <div class="btn-group">
                     <button class="btn btn-disabled" disabled>
                         <span>⏳ COMING SOON - Q3 2026</span>
                     </button>
                 </div>
-
                 <div class="card-footer">
                     <a href="privacy-slideclash.html" class="policy-link">PRIVACY POLICY</a>
                     <span style="color: var(--dim); font-size: 0.75rem;">Beta • Waitlist only</span>
@@ -947,13 +630,11 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-content">
-            <p class="footer-label">Contact & Support</p>
+            <p class="footer-label">Contact &amp; Support</p>
             <a href="mailto:support@emuverse.studio" class="contact-mail" onclick="copyEmail(event)">support@emuverse.studio</a>
             <p id="copy-msg">✓ COPIED!</p>
-
             <div class="footer-links">
                 <a href="https://github.com/mrtgunes" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="#" class="footer-link" title="Coming soon">Discord</a>
@@ -961,87 +642,261 @@
                 <a href="terms.html" class="footer-link">Terms</a>
                 <a href="support.html" class="footer-link">Support</a>
             </div>
-
             <p class="copyright">© 2026 EMUVERSE STUDIO. ALL RIGHTS RESERVED.</p>
         </div>
     </footer>
 </div>
 
 <script>
-// ========== SHOOTING STAR GENERATION ==========
-function createShootingStar() {
-    const starfield = document.getElementById('starfield');
-    const star = document.createElement('div');
-    star.className = 'shooting-star';
-    
-    // Random position from top-right area
-    star.style.top = Math.random() * 40 + '%';
-    star.style.left = (Math.random() * 50 + 50) + '%';
-    
-    // Random duration for more natural look
-    star.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
-    
-    starfield.appendChild(star);
-    
-    // Remove after animation to keep DOM clean
-    setTimeout(() => {
-        star.remove();
-    }, 3000);
-}
-
-// ========== STAR GENERATION ==========
+// ===== RICH STAR GENERATION =====
 function generateStars() {
-    const starfield = document.getElementById('starfield');
+    const sf = document.getElementById('starfield');
+    const types = ['s1','s2','s3','s4'];
+    const count = 280;
 
-    // Regular twinkling stars
-    for (let i = 0; i < 200; i++) {
-        const star = document.createElement('div');
-        star.className = `star ${Math.random() > 0.8 ? 'bright' : ''}`;
-        star.style.width = (Math.random() * 4 + 1) + 'px';
-        star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 3 + 's';
-        starfield.appendChild(star);
+    for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        const type = types[Math.floor(Math.random() * types.length)];
+        const isBright = Math.random() > 0.82;
+        const size = isBright ? (Math.random() * 3 + 2) : (Math.random() * 2 + 0.5);
+        const dur = (Math.random() * 4 + 2).toFixed(1);
+        const delay = (Math.random() * 6).toFixed(2);
+        const minOp = (Math.random() * 0.1 + 0.05).toFixed(2);
+        const maxOp = isBright ? (Math.random() * 0.4 + 0.7).toFixed(2) : (Math.random() * 0.5 + 0.4).toFixed(2);
+
+        el.className = `star ${type}${isBright ? ' bright' : ''}`;
+        el.style.cssText = `
+            width:${size}px; height:${size}px;
+            left:${Math.random()*100}%;
+            top:${Math.random()*100}%;
+            --dur:${dur}s; --delay:${delay}s;
+            --min-op:${minOp}; --max-op:${maxOp};
+            --scale:${isBright ? 1.6 : 1.2};
+        `;
+        sf.appendChild(el);
+    }
+
+    // Add 4-pointed cross stars scattered around
+    for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        const size = Math.random() * 1.5 + 0.8;
+        el.className = 'star-cross';
+        el.style.cssText = `
+            left:${Math.random()*100}%;
+            top:${Math.random()*100}%;
+            --size:${size}px;
+            --dur:${(Math.random()*5+3).toFixed(1)}s;
+            --delay:${(Math.random()*8).toFixed(2)}s;
+        `;
+        sf.appendChild(el);
     }
 }
 
-// ========== PARTICLE EFFECTS ==========
+// ===== CANVAS-BASED ASYMMETRIC METEOR SYSTEM =====
+(function() {
+    const canvas = document.getElementById('meteorCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Meteor configs — varied angles, spawn zones, speeds, sizes
+    // angle: degrees (direction of travel), spawn from different screen edges/zones
+    const METEOR_ZONES = [
+        // Top-right quadrant, steep angle
+        { spawnZone: 'top-right', angleMin: 200, angleMax: 240, lenMin: 100, lenMax: 260, speedMin: 1.8, speedMax: 3.2, intervalMin: 2800, intervalMax: 6000 },
+        // Top-left, shallower
+        { spawnZone: 'top-left', angleMin: 290, angleMax: 330, lenMin: 80, lenMax: 180, speedMin: 1.5, speedMax: 2.8, intervalMin: 4000, intervalMax: 9000 },
+        // Right side, nearly horizontal
+        { spawnZone: 'right', angleMin: 175, angleMax: 210, lenMin: 120, lenMax: 300, speedMin: 2.0, speedMax: 3.8, intervalMin: 5000, intervalMax: 11000 },
+        // Top-center, steep
+        { spawnZone: 'top-center', angleMin: 215, angleMax: 250, lenMin: 90, lenMax: 220, speedMin: 1.6, speedMax: 3.0, intervalMin: 3500, intervalMax: 8000 },
+        // Bottom-right, upward-left  (rare reverse)
+        { spawnZone: 'bottom-right', angleMin: 140, angleMax: 165, lenMin: 60, lenMax: 140, speedMin: 1.2, speedMax: 2.2, intervalMin: 8000, intervalMax: 16000 },
+        // Far left, diagonal
+        { spawnZone: 'top-far-left', angleMin: 330, angleMax: 355, lenMin: 70, lenMax: 160, speedMin: 1.4, speedMax: 2.5, intervalMin: 7000, intervalMax: 14000 },
+    ];
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+    function randInt(min, max) { return Math.floor(rand(min, max)); }
+
+    function getSpawnPoint(zone) {
+        const W = canvas.width, H = canvas.height;
+        switch(zone) {
+            case 'top-right':   return { x: rand(W*0.45, W*0.95), y: rand(-10, H*0.2) };
+            case 'top-left':    return { x: rand(W*0.05, W*0.4), y: rand(-10, H*0.15) };
+            case 'right':       return { x: rand(W*0.7, W+10), y: rand(0, H*0.45) };
+            case 'top-center':  return { x: rand(W*0.25, W*0.75), y: rand(-10, H*0.08) };
+            case 'bottom-right':return { x: rand(W*0.6, W), y: rand(H*0.7, H) };
+            case 'top-far-left':return { x: rand(-10, W*0.15), y: rand(0, H*0.35) };
+            default:            return { x: rand(0, W), y: rand(-20, 0) };
+        }
+    }
+
+    class Meteor {
+        constructor(zone) {
+            this.reset(zone);
+        }
+
+        reset(zone) {
+            const cfg = METEOR_ZONES[zone];
+            const pt = getSpawnPoint(cfg.spawnZone);
+            this.x = pt.x;
+            this.y = pt.y;
+            this.angle = rand(cfg.angleMin, cfg.angleMax) * Math.PI / 180;
+            this.length = rand(cfg.lenMin, cfg.lenMax);
+            this.speed = rand(cfg.speedMin, cfg.speedMax);
+            this.vx = Math.cos(this.angle) * this.speed * 16;
+            this.vy = Math.sin(this.angle) * this.speed * 16;
+            this.life = 0;
+            this.maxLife = rand(55, 110);
+            this.width = rand(0.6, 2.0);
+            this.opacity = 0;
+            this.alive = true;
+
+            // Color variants
+            const colors = [
+                [255, 255, 255],
+                [200, 210, 255],
+                [180, 240, 255],
+                [200, 180, 255],
+                [255, 240, 200],
+            ];
+            this.color = colors[randInt(0, colors.length)];
+        }
+
+        update() {
+            this.life++;
+            const progress = this.life / this.maxLife;
+            if (progress < 0.15) {
+                this.opacity = progress / 0.15;
+            } else if (progress > 0.7) {
+                this.opacity = 1 - (progress - 0.7) / 0.3;
+            } else {
+                this.opacity = 1;
+            }
+
+            this.x += this.vx / 60;
+            this.y += this.vy / 60;
+
+            if (this.life >= this.maxLife) this.alive = false;
+        }
+
+        draw(ctx) {
+            const tailX = this.x - Math.cos(this.angle) * this.length;
+            const tailY = this.y - Math.sin(this.angle) * this.length;
+
+            const [r, g, b] = this.color;
+
+            // Main trail gradient
+            const grad = ctx.createLinearGradient(tailX, tailY, this.x, this.y);
+            grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
+            grad.addColorStop(0.4, `rgba(${r},${g},${b},${(this.opacity * 0.3).toFixed(2)})`);
+            grad.addColorStop(0.8, `rgba(${r},${g},${b},${(this.opacity * 0.7).toFixed(2)})`);
+            grad.addColorStop(1, `rgba(${r},${g},${b},${this.opacity.toFixed(2)})`);
+
+            ctx.save();
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = this.width;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(tailX, tailY);
+            ctx.lineTo(this.x, this.y);
+            ctx.stroke();
+
+            // Bright glowing head
+            const headGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
+            headGlow.addColorStop(0, `rgba(255,255,255,${this.opacity.toFixed(2)})`);
+            headGlow.addColorStop(0.3, `rgba(${r},${g},${b},${(this.opacity*0.8).toFixed(2)})`);
+            headGlow.addColorStop(1, `rgba(${r},${g},${b},0)`);
+            ctx.fillStyle = headGlow;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Tiny bright core
+            ctx.fillStyle = `rgba(255,255,255,${this.opacity.toFixed(2)})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+    }
+
+    // Active meteors pool
+    const meteors = [];
+
+    // Schedule each zone independently
+    function scheduleMeteor(zoneIdx) {
+        const cfg = METEOR_ZONES[zoneIdx];
+        const delay = rand(cfg.intervalMin, cfg.intervalMax);
+        setTimeout(() => {
+            // Sometimes spawn 2 close together (shower burst)
+            if (Math.random() > 0.72) {
+                meteors.push(new Meteor(zoneIdx));
+                setTimeout(() => meteors.push(new Meteor(zoneIdx)), rand(120, 400));
+            } else {
+                meteors.push(new Meteor(zoneIdx));
+            }
+            scheduleMeteor(zoneIdx);
+        }, delay);
+    }
+
+    // Stagger initial launch so they don't all fire at once
+    METEOR_ZONES.forEach((_, i) => {
+        setTimeout(() => scheduleMeteor(i), rand(0, 3000));
+    });
+
+    // Also fire a few immediately on load for immediate wow
+    setTimeout(() => meteors.push(new Meteor(0)), 800);
+    setTimeout(() => meteors.push(new Meteor(3)), 1800);
+    setTimeout(() => meteors.push(new Meteor(1)), 3200);
+
+    function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = meteors.length - 1; i >= 0; i--) {
+            meteors[i].update();
+            meteors[i].draw(ctx);
+            if (!meteors[i].alive) meteors.splice(i, 1);
+        }
+        requestAnimationFrame(loop);
+    }
+    loop();
+})();
+
+// ===== PARTICLES =====
 function generateParticles() {
     const container = document.getElementById('particles');
-    const sizes = ['small', 'medium', 'large'];
-
+    const sizes = ['small','medium','large'];
     for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        const sizeClass = sizes[Math.floor(Math.random() * sizes.length)];
-        particle.className = `particle ${sizeClass}`;
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDuration = (15 + Math.random() * 15) + 's';
-        particle.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(particle);
+        const el = document.createElement('div');
+        el.className = `particle ${sizes[Math.floor(Math.random()*sizes.length)]}`;
+        el.style.left = Math.random()*100 + '%';
+        el.style.top = Math.random()*100 + '%';
+        el.style.animationDuration = (15 + Math.random()*15) + 's';
+        el.style.animationDelay = Math.random()*5 + 's';
+        container.appendChild(el);
     }
 }
 
-// ========== EMAIL COPY ==========
+// ===== EMAIL COPY =====
 function copyEmail(e) {
     e.preventDefault();
     const email = 'support@emuverse.studio';
-
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(email).then(() => {
-            showCopyMsg();
-        }).catch(() => fallbackCopy(email));
-    } else {
-        fallbackCopy(email);
-    }
+        navigator.clipboard.writeText(email).then(showCopyMsg).catch(() => fallbackCopy(email));
+    } else { fallbackCopy(email); }
 }
 
 function fallbackCopy(email) {
     const el = document.createElement('textarea');
     el.value = email;
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
+    el.style.cssText = 'position:absolute;left:-9999px';
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
@@ -1055,28 +910,19 @@ function showCopyMsg() {
     setTimeout(() => msg.classList.remove('show'), 2500);
 }
 
-// ========== PARALLAX SCROLL ==========
+// ===== PARALLAX =====
 window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
-    const mountains = document.querySelectorAll('.mountains-layer');
-    mountains.forEach((m, i) => {
-        m.style.transform = `translateY(${scrolled * (i + 1) * 0.08}px)`;
+    document.querySelectorAll('.mountains-layer').forEach((m, i) => {
+        m.style.transform = `translateY(${scrolled*(i+1)*0.08}px)`;
     });
 });
 
-// ========== INIT ==========
+// ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
     generateStars();
     generateParticles();
-    
-    // Trigger shooting stars at random intervals
-    setInterval(() => {
-        if (Math.random() > 0.4) { // %60 chance to spawn
-            createShootingStar();
-        }
-    }, 4000);
 });
 </script>
-
 </body>
 </html>
