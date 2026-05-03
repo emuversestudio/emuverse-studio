@@ -107,26 +107,31 @@
         /* Shooting stars */
         .shooting-star {
             position: absolute;
-            width: 3px;
-            height: 100px;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(0, 229, 255, 0.3), transparent);
-            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.8));
-            animation: meteor-shower 4s infinite;
+            width: 4px;
+            height: 120px;
+            background: linear-gradient(to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(0, 229, 255, 0.1) 20%,
+                rgba(0, 229, 255, 0.6) 50%,
+                rgba(255, 255, 255, 1) 100%);
+            filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.9))
+                    drop-shadow(0 0 15px rgba(0, 229, 255, 0.6));
+            animation: meteor-shower 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
         }
 
         @keyframes meteor-shower {
             0% {
-                transform: translateX(0) translateY(-100vh) rotate(-45deg);
+                transform: translateX(-50px) translateY(-150vh) rotate(-30deg);
                 opacity: 0;
             }
             5% {
                 opacity: 1;
             }
-            90% {
+            85% {
                 opacity: 1;
             }
             100% {
-                transform: translateX(400px) translateY(100vh) rotate(-45deg);
+                transform: translateX(200px) translateY(120vh) rotate(-30deg);
                 opacity: 0;
             }
         }
@@ -897,9 +902,6 @@
                     <a href="https://play.google.com/store/apps/details?id=studio.emuverse.retro" class="btn" target="_blank" rel="noopener noreferrer">
                         <span>📱 GET ON GOOGLE PLAY</span>
                     </a>
-                    <a href="https://github.com/mrtgunes" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-                        <span>📖 VIEW ON GITHUB</span>
-                    </a>
                 </div>
 
                 <div class="card-footer">
@@ -928,9 +930,6 @@
                     <button class="btn btn-disabled" disabled>
                         <span>⏳ COMING SOON - Q3 2026</span>
                     </button>
-                    <a href="#" class="btn btn-secondary" onclick="showWaitlist(event)">
-                        <span>📧 JOIN WAITLIST</span>
-                    </a>
                 </div>
 
                 <div class="card-footer">
