@@ -36,3 +36,6 @@ sharethrough.com, 4194, RESELLER, 060d053dcf45cbf3
 
 # PubMatic
 pubmatic.com, 159856, DIRECT, 5d62403b186f2ace
+
+# BIGO Ads
+bigo.sg, 0y1a5qps9w, DIRECT
