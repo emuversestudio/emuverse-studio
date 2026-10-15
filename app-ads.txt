@@ -1,3 +1,38 @@
+# AdMob + SDK bidding (InMobi, Liftoff)
 google.com, pub-2007377267942381, DIRECT, f08c47fec0942fa0
 inmobi.com, 38418c7bdcef4dad8cfd3ad47c459107, DIRECT, 83e75a7ae333ca9d
 vungle.com, 6acf8d698f0c54b9af53b6e7, DIRECT, c107d686becd2d77
+
+# Adagio
+adagio.io, 1965, DIRECT
+adagio.io, 1965-OB, RESELLER
+rubiconproject.com, 19116, RESELLER, 0bfd66d529a55807
+pubmatic.com, 159110, RESELLER, 5d62403b186f2ace
+improvedigital.com, 1790, RESELLER
+onetag.com, 6b859b96c564fbe, RESELLER
+appnexus.com, 13099, RESELLER
+rubiconproject.com, 11006, RESELLER, 0bfd66d529a55807
+pubmatic.com, 161593, RESELLER, 5d62403b186f2ace
+smartadserver.com, 3554, RESELLER
+sharethrough.com, 3554, RESELLER, d53b998a7bd4ecd2
+lijit.com, 367236, RESELLER, fafdf38b16bf6b2b
+rubiconproject.com, 17960, RESELLER, 0bfd66d529a55807
+pubmatic.com, 156212, RESELLER, 5d62403b186f2ace
+pubmatic.com, 137711, RESELLER, 5d62403b186f2ace
+openx.com, 538959099, RESELLER, 6a698e2ec38604c6
+openx.com, 558899373, RESELLER, 6a698e2ec38604c6
+triplelift.com, 13482, RESELLER, 6c33edb13117fd86
+video.unrulymedia.com, 5672421953199218469, RESELLER
+rtbhouse.com, XPSLDtnX92XNGGFB6ith, RESELLER, 4f3b94578e85950c
+freewheel.tv, 536359-r-524565, RESELLER
+freewheel.tv, 536359-r-523319, RESELLER
+adform.com, 3354, RESELLER, 9f5210a2f0999e32
+
+# Equativ (Open Bidding)
+smartadserver.com, 4194-OB, RESELLER, 060d053dcf45cbf3
+smartadserver.com, 4194, RESELLER, 060d053dcf45cbf3
+sharethrough.com, 4194-OB, RESELLER, 060d053dcf45cbf3
+sharethrough.com, 4194, RESELLER, 060d053dcf45cbf3
+
+# PubMatic
+pubmatic.com, 159856, DIRECT, 5d62403b186f2ace
