@@ -5,3 +5,7 @@ vungle.com, 6acf8d698f0c54b9af53b6e7, DIRECT, c107d686becd2d77
 
 # BIGO Ads
 bigo.sg, 0y1a5qps9w, DIRECT
+
+# Mobfox (Open Bidding)
+uis.mobfox.com, 2597, DIRECT, 5529a3d1f59865be
+pubmatic.com, 156451, RESELLER, 5d62403b186f2ace
