@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Emuverse 3D CAD</title>
+    <link rel="canonical" href="https://emuverse.studio/cad/privacy.html">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; background-color: #f9f9f9; }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        h1 { color: #1B1F26; border-bottom: 2px solid #FFC81E; padding-bottom: 10px; }
+        h2 { color: #555; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px; }
+        p, li { margin-bottom: 15px; }
+        .footer { margin-top: 50px; font-size: 0.9em; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
+        @media (max-width: 600px) { body { margin: 0; padding: 16px; } .container { padding: 22px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Policy for Emuverse 3D CAD</h1>
+        <p><strong>Last updated: November 18, 2026</strong></p>
+
+        <p>Emuverse 3D CAD (package <code>studio.emuverse.cad3d</code>, listed on Google Play as "Emuverse: SKP, DWG &amp; 3D Viewer") is published by Emuverse Studio (emuverse.studio). This policy explains what the app does with your information. In short: your drawings and files stay on your device unless you choose to back them up to your own Google Drive; the free version shows advertisements; Premium subscribers see no advertisements; and the only data that reaches our own server is what is needed to check subscriptions and the free trial.</p>
+
+        <h2>1. Your Files Stay on Your Device</h2>
+        <p>When you open a drawing (for example SKP, GLB, DWG/DXF, OBJ/STL, 3MF, PDF, images or videos), the app reads it through Android's system file picker and keeps a private copy inside the app's own storage so it can be reopened. Your original file is never changed. Files, scenes, measurements, notes and exported images are processed only on your device and are never uploaded to us or to advertising partners.</p>
+
+        <h2>2. Optional Google Drive Backup</h2>
+        <p>If you choose to back up a project, the app asks for permission to use a hidden app folder in <strong>your own</strong> Google Drive (the <code>drive.appdata</code> scope). Only the items you select are uploaded there, directly from your device to your Drive. We cannot see this folder. You can delete these backups in the app or in your Google Drive settings at any time.</p>
+
+        <h2>3. Permissions</h2>
+        <ul>
+            <li><strong>Camera</strong>: used only when you start the augmented reality (AR) view, through Google Play Services for AR (ARCore). Camera images are processed on the device and are not stored or sent by the app.</li>
+            <li><strong>Internet</strong>: used for advertisements (free version), subscription and free trial checks, and the optional Drive backup.</li>
+            <li><strong>Advertising ID</strong>: used by the advertising partners below in the free version (see section 6).</li>
+            <li><strong>File access</strong>: the app has no broad storage permission. It only sees the files you pick yourself in the system file picker.</li>
+        </ul>
+
+        <h2>4. Free Trial (Google Sign-In)</h2>
+        <p>If you start the 1-week free trial in the app, it asks you to sign in with your Google Account. To make sure each person and each device gets this trial only once, our server (Google Cloud Functions in the Firebase project of Emuverse Studio):</p>
+        <ul>
+            <li>verifies the sign-in token issued by Google and reads only your Google account's unique identifier;</li>
+            <li>stores a one-way, salted SHA-256 hash of that identifier and a one-way hash of your device's app-specific Android ID, together with the trial's start and end time.</li>
+        </ul>
+        <p>We do not store your name, email address, profile picture or the sign-in token. A hash cannot be turned back into your account or device identifier. These records are kept so that the free trial cannot be repeated; they contain no other information.</p>
+
+        <h2>5. Subscriptions and Payments</h2>
+        <p>Subscriptions are sold through Google Play Billing. Payment details are handled entirely by Google; we never see them. When you buy or restore a subscription, the app sends the purchase token and product name to our server, which asks Google Play whether the subscription is active. The answer is cached on your device. We do not keep a database of purchases. Google's own processing is described in the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+
+        <h2>6. Advertising (Free Version Only)</h2>
+        <p>The free version of the app shows advertisements. Premium subscribers (including during the free trial) see no advertisements, and the advertising SDK is not started for them. Ads are not shown while you view the built-in sample projects.</p>
+        <p>Ads are served by <strong>Google AdMob</strong>. Through AdMob mediation, ads may also come from <strong>Liftoff Monetize (Vungle)</strong>, <strong>Equativ</strong> and <strong>PubMatic</strong>. To show and measure ads, these companies may collect device information such as the advertising ID, IP address, device model, operating system, language and coarse location derived from the IP address, and how you interact with ads. They process this data under their own privacy policies:</p>
+        <ul>
+            <li>Google: <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from apps that use its services</a></li>
+            <li>Liftoff (Vungle): <a href="https://liftoff.io/privacy-policy/">liftoff.io/privacy-policy</a></li>
+            <li>Equativ: <a href="https://equativ.com/end-users-privacy-policy/">equativ.com/end-users-privacy-policy</a></li>
+            <li>PubMatic: <a href="https://pubmatic.com/legal/privacy-policy/">pubmatic.com/legal/privacy-policy</a></li>
+        </ul>
+        <p><strong>Your choices.</strong> In the European Economic Area, the United Kingdom and Switzerland, the app asks for your consent through Google's consent message before personalized ads are shown, and you can change your choice at any time in Settings &rarr; "Ad privacy options". Everywhere, you can reset or delete your advertising ID or opt out of personalized ads in your Android settings (Settings &rarr; Google &rarr; Ads). Your drawings, files and their contents are never shared with advertising partners. We do not sell personal data, and the app contains no analytics SDK of its own.</p>
+
+        <h2>7. Data Retention and Deletion</h2>
+        <p>Files and settings on your device are removed when you delete them in the app or uninstall it. Trial records (hashes and trial dates) are kept for as long as the app offers the free trial, to prevent repeat trials. Advertising data is kept by the advertising partners under their own policies. To ask about or request deletion of the records we hold, email <strong>support@emuverse.studio</strong> with the subject "3D CAD Data Request".</p>
+
+        <h2>8. Children</h2>
+        <p>The app is a professional drawing viewer and presentation tool and is not directed to children under 13.</p>
+
+        <h2>9. Changes</h2>
+        <p>If this policy changes, the new version will be published on this page with a new date.</p>
+
+        <h2>10. Contact Us</h2>
+        <p>Questions about this policy: <strong>support@emuverse.studio</strong></p>
+
+        <div class="footer">
+            &copy; 2026 Emuverse Studio. All rights reserved. &middot; <a href="terms.html">Terms of Use</a>
+        </div>
+    </div>
+</body>
+</html>

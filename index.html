@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Emuverse Studio makes Android games and apps, including Emuverse Retro Games, a retro game emulator supporting more than 40 classic consoles. Free on Google Play.">
+    <meta name="description" content="Emuverse Studio makes Android games and apps, including Emuverse Retro Games, a retro game emulator supporting more than 40 classic consoles, and Emuverse 3D CAD, a SketchUp, AutoCAD and 3D model viewer. Free on Google Play.">
     <link rel="canonical" href="https://emuverse.studio/">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://emuverse.studio/">
@@ -241,6 +241,7 @@
 
         .emu-badge { background: rgba(124,77,255,0.3); color: var(--primary); border: 1.5px solid var(--primary); }
         .slide-badge { background: rgba(0,229,255,0.3); color: var(--accent); border: 1.5px solid var(--accent); }
+        .cad-badge { background: rgba(255,200,30,0.18); color: #FFC81E; border: 1.5px solid #FFC81E; }
 
         .card h2 {
             font-family: 'Orbitron', sans-serif;
@@ -441,6 +442,34 @@
                 <div class="card-footer">
                     <a href="privacy-emuverse.html" class="policy-link">PRIVACY POLICY</a>
                     <span style="color: var(--dim); font-size: 0.75rem;">v2.0 • May 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+                    <img src="data:image/png;base64,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" alt="Emuverse 3D CAD icon" style="width:72px;height:72px;border-radius:18px;box-shadow:0 4px 20px rgba(255,200,30,0.35);">
+                    <div class="badge cad-badge" style="margin-bottom:0;">CAD / 3D VIEWER</div>
+                </div>
+                <h2>Emuverse 3D CAD <span class="coming-soon">SOON</span></h2>
+                <p>Open, measure and present SketchUp, AutoCAD and 3D models on your Android phone or tablet. Show your designs to clients anywhere, walk through them in 3D or place them in your room with AR. Your original files are never changed.</p>
+                <ul class="features">
+                    <li><strong>Many Formats:</strong> SKP, DWG/DXF, GLB, OBJ, STL, 3MF, PDF, renders, 360&deg; images and videos</li>
+                    <li><strong>True to the Drawing:</strong> SketchUp scenes, dimensions, text and layers as designed</li>
+                    <li><strong>Measure &amp; Section:</strong> Measure lengths and areas, cut sections, explode floors and parts</li>
+                    <li><strong>Present:</strong> Scenes, guided tours, walk mode, video mode and augmented reality</li>
+                    <li><strong>Premium:</strong> Ad-free, edit your models, draw AutoCAD drawings, save and export</li>
+                </ul>
+                <div class="btn-group">
+                    <button class="btn btn-disabled" disabled>
+                        <span>&#9203; COMING SOON TO GOOGLE PLAY</span>
+                    </button>
+                </div>
+                <div class="card-footer">
+                    <a href="cad/privacy.html" class="policy-link">PRIVACY POLICY</a>
+                    <a href="cad/terms.html" class="policy-link">TERMS OF USE</a>
+                    <span style="color: var(--dim); font-size: 0.75rem;">v0.9 &bull; Nov 2026</span>
                 </div>
             </div>
         </div>
